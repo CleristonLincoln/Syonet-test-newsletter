@@ -5,6 +5,7 @@ import br.com.syonet.newsletter.api.v1.input.NoticiaInput;
 import br.com.syonet.newsletter.domain.model.Cliente;
 import br.com.syonet.newsletter.domain.model.Noticia;
 import br.com.syonet.newsletter.domain.service.NoticiaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -23,7 +24,7 @@ public class NoticiaController {
     private final ModelMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Noticia> create(@RequestBody NoticiaInput noticiaInput) {
+    public ResponseEntity<Noticia> create(@RequestBody @Valid NoticiaInput noticiaInput) {
 
         Noticia noticia = service.save(mapper.map(noticiaInput, Noticia.class));
 

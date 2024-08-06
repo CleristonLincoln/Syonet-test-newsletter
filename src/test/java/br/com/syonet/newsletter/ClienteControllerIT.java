@@ -1,9 +1,4 @@
-package br.com.syonet.newsletter.controller;
-
-import br.com.syonet.newsletter.api.v1.input.NoticiaInput;
 import br.com.syonet.newsletter.utils.DatabaseCleaner;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +19,8 @@ import static org.hamcrest.Matchers.equalTo;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.yml")
 @ActiveProfiles("test")
-public class NoticiaControllerIT {
+public class ClienteControllerIT {
+
 
     @LocalServerPort
     private int port;
@@ -36,100 +32,98 @@ public class NoticiaControllerIT {
     public void setUp() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.port = port;
-        RestAssured.basePath = "noticias";
+        RestAssured.basePath = "clientes";
 
         databaseCleaner.clearTables();
 
     }
 
 
-    // titulo é obrigatório
     @Test
-    void shouldTittleIsRequired_return_404() throws JsonProcessingException {
+    void shouldListClientPageable_return_200() {
+        given()
+                .accept(ContentType.JSON)
+                .when()
+                .get()
+                .then()
+                .statusCode(HttpStatus.OK.value())
+        ;
+    }
 
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        var body = NoticiaInput.builder()
-                .titulo(null)
-                .descricao("Uma descricao qualquer")
-                .link("http://www.dwed.com")
-                .build();
+    @Test
+    void shouldNameIsRequired_404() {
 
         given()
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
-                .body(objectMapper.writeValueAsString(body))
+                .body("{\"email\":\"email@de.com\",\"dataNascimento\":\"2020-01-20\"}")
                 .post()
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("fields.name[0]", equalTo("titulo"))
                 .body("detail", equalTo("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente."))
-                .body("fields.userMessage[0]", equalTo("Campo titulo é obrigatório"))
+                .body("fields.userMessage[0]", equalTo("Campo nome é obrigatório"))
+                .body("fields.name[0]", equalTo("nome"))
         ;
     }
 
     @Test
-    void shouldDescriptionIsRequired_return_404() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        var body = NoticiaInput.builder()
-                .titulo(" titulo aleatorio")
-                .link("http://www.dwed.com")
-                .build();
-
+    void shouldEmailIsValid_404() {
         given()
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
-                .body(objectMapper.writeValueAsString(body))
+                .body("{\"nome\":\"Usuario\",\"email\":\"email@.com\",\"dataNascimento\":\"2020-01-20\"}")
                 .post()
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("fields.name[0]", equalTo("descricao"))
                 .body("detail", equalTo("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente."))
-                .body("fields.userMessage[0]", equalTo("Campo descrição é obrigatório"))
+                .body("fields.userMessage[0]", equalTo("Campo email esta inválido"))
+                .body("fields.name[0]", equalTo("email"))
         ;
     }
 
     @Test
-    void shouldLinkInvalid_return_404() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        var body = NoticiaInput.builder()
-                .titulo(" titulo aleatorio")
-                .descricao("uma descicao qualquer")
-                .link("http://www.dweedddddddm")
-                .build();
-
+    void shouldEmailIsRequired_404() {
         given()
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
-                .body(objectMapper.writeValueAsString(body))
+                .body("{\"nome\":\"Usuario\",\"dataNascimento\":\"2020-01-20\"}")
                 .post()
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .body("detail", equalTo("Link informado é inválido."))
-                .body("userMessage", equalTo("Link informado é inválido."))
+                .body("detail", equalTo("Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente."))
+                .body("fields.userMessage[0]", equalTo("Campo email é obrigatório"))
+                .body("fields.name[0]", equalTo("email"))
         ;
     }
-    // link url é opcional
+
 
     @Test
-    void shouldCreatedNoticia_return_201() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        var body = NoticiaInput.builder()
-                .titulo(" titulo aleatorio")
-                .descricao("uma descicao qualquer")
-                .build();
-
+    void shouldFormatDateBirthdayIsNotValid_404() {
         given()
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
-                .body(objectMapper.writeValueAsString(body))
+                .body("{\"nome\":\"Usuario\",\"email\":\"email@.com\",\"dataNascimento\":\"2020-01-40\"}")
+                .post()
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("detail", equalTo("A data fornecida está em um formato inválido. Verifique o valor da data."))
+                .body("userMessage", equalTo("Por favor, forneça uma data válida no formato correto."))
+        ;
+    }
+
+
+    @Test
+    void shouldDateBirthdayIsOptional_201() {
+        given()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .body("{\"nome\":\"Usuario\",\"email\":\"email@edasd.com\"}")
                 .post()
                 .then()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("descricao", equalTo("uma descicao qualquer"))
+                .body("nome", equalTo("Usuario"))
         ;
     }
+
+
 }

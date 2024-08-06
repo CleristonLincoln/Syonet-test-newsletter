@@ -5,6 +5,7 @@ import br.com.syonet.newsletter.domain.model.Noticia;
 import br.com.syonet.newsletter.domain.repository.NoticiaRepository;
 import br.com.syonet.newsletter.domain.service.NoticiaService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -26,16 +28,14 @@ public class NoticiaServiceImpl implements NoticiaService {
 
     @Override
     public Noticia save(Noticia noticia) {
-      //  validLink(noticia.getLink());
+        validLink(noticia.getLink());
         return repository.save(noticia);
     }
 
     private void validLink(String link) {
-        try {
-            new URL(link).toURI();
+        UrlValidator urlValidator = new UrlValidator();
 
-        } catch (MalformedURLException | URISyntaxException e) {
-            throw new LinkInvalidException();
-        }
+    if (Objects.nonNull(link) && !urlValidator.isValid(link))
+        throw new LinkInvalidException();
     }
 }

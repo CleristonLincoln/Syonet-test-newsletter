@@ -1,15 +1,18 @@
 package br.com.syonet.newsletter.api.v1.input;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
+import org.hibernate.validator.constraints.URL;
 
 @Data
+@Builder
 public class NoticiaInput {
 
-    @NotBlank
+    @NotNull
     private String titulo;
 
-    @NotBlank
+    @NotNull
     private String descricao;
 
     private String link;

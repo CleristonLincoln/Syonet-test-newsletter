@@ -1,5 +1,3 @@
-package br.com.syonet.newsletter.controller;
-
 import br.com.syonet.newsletter.api.v1.input.NoticiaInput;
 import br.com.syonet.newsletter.utils.DatabaseCleaner;
 import com.fasterxml.jackson.core.JsonProcessingException;
