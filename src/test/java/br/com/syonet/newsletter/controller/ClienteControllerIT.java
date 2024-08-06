@@ -1,5 +1,7 @@
 package br.com.syonet.newsletter.controller;
 
+import br.com.syonet.newsletter.SyonetTestNewsletterApplication;
+import br.com.syonet.newsletter.SyonetTestNewsletterApplicationTests;
 import br.com.syonet.newsletter.utils.DatabaseCleaner;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -21,7 +23,7 @@ import static org.hamcrest.Matchers.equalTo;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.yml")
 @ActiveProfiles("test")
-public class ClienteControllerIT {
+public class ClienteControllerIT extends SyonetTestNewsletterApplicationTests {
 
 
     @LocalServerPort

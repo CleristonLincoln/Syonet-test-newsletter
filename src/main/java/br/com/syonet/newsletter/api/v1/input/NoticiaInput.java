@@ -3,7 +3,6 @@ package br.com.syonet.newsletter.api.v1.input;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.validator.constraints.URL;
 
 @Data
 @Builder
