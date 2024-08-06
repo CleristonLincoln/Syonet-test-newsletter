@@ -11,7 +11,6 @@ public class NoticiaInput {
 
     @NotBlank
     private String descricao;
-    
-    // validar com o webclient
+
     private String link;
 }

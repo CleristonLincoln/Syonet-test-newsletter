@@ -1,9 +1,10 @@
 package br.com.syonet.newsletter.api.v1.controller;
 
 import br.com.syonet.newsletter.api.v1.input.ClienteInput;
+import br.com.syonet.newsletter.api.v1.input.NoticiaInput;
 import br.com.syonet.newsletter.domain.model.Cliente;
-import br.com.syonet.newsletter.domain.service.ClienteService;
-import jakarta.validation.Valid;
+import br.com.syonet.newsletter.domain.model.Noticia;
+import br.com.syonet.newsletter.domain.service.NoticiaService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -13,27 +14,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("clientes")
+@RequestMapping("noticias")
 @RequiredArgsConstructor
-public class ClienteController {
+public class NoticiaController {
 
-    private final ClienteService service;
+    private final NoticiaService service;
 
     private final ModelMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Cliente> create(@RequestBody @Valid ClienteInput clienteInput) {
+    public ResponseEntity<Noticia> create(@RequestBody NoticiaInput noticiaInput) {
 
-        Cliente cliente = service.save(mapper.map(clienteInput, Cliente.class));
+        Noticia noticia = service.save(mapper.map(noticiaInput, Noticia.class));
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(noticia);
 
     }
 
     @GetMapping
-    public ResponseEntity<Page<Cliente>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<Noticia>> getAll(Pageable pageable) {
 
-        Page<Cliente> page = service.getPageable(pageable);
+        Page<Noticia> page = service.getPageable(pageable);
 
         return ResponseEntity.ok(page);
     }

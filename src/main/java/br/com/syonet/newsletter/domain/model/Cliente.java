@@ -22,12 +22,12 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty
-    private String nome;
+     private String nome;
 
     @Email
     private String email;
 
+    @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
 }

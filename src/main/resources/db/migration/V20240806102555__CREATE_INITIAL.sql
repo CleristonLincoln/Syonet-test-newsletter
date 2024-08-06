@@ -2,7 +2,7 @@ create table cliente(
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL ,
-    dataNascimento DATE
+    data_nascimento DATE
 )ENGINE = InnoDB
  DEFAULT CHARSET = utf8mb4;
 

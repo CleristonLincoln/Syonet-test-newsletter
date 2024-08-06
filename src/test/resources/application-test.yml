@@ -27,3 +27,15 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: none
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: cllew
+    password: edwed
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
