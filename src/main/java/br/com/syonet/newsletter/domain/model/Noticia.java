@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,4 +28,9 @@ public class Noticia {
 
     private String link;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "noticia_x_cliente",
+            joinColumns = @JoinColumn(name = "id_noticia"),
+            inverseJoinColumns = @JoinColumn(name = "id_cliente"))
+    private List<Cliente> clientes;
 }

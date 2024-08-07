@@ -33,7 +33,7 @@ public class ClienteController {
     @GetMapping
     public ResponseEntity<Page<Cliente>> getAll(Pageable pageable) {
 
-        Page<Cliente> page = service.getPageable(pageable);
+        Page<Cliente> page = service.getListPageable(pageable);
 
         return ResponseEntity.ok(page);
     }

@@ -13,6 +13,5 @@ public class NoticiaModel {
 
     private String descricao;
 
-    // validar com o webclient
     private String link;
 }

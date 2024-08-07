@@ -1,8 +1,6 @@
 package br.com.syonet.newsletter.api.v1.controller;
 
-import br.com.syonet.newsletter.api.v1.input.ClienteInput;
 import br.com.syonet.newsletter.api.v1.input.NoticiaInput;
-import br.com.syonet.newsletter.domain.model.Cliente;
 import br.com.syonet.newsletter.domain.model.Noticia;
 import br.com.syonet.newsletter.domain.service.NoticiaService;
 import jakarta.validation.Valid;
@@ -35,7 +33,7 @@ public class NoticiaController {
     @GetMapping
     public ResponseEntity<Page<Noticia>> getAll(Pageable pageable) {
 
-        Page<Noticia> page = service.getPageable(pageable);
+        Page<Noticia> page = service.getListPageable(pageable);
 
         return ResponseEntity.ok(page);
     }

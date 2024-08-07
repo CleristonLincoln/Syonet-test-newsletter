@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface BaseService<T> {
 
-    Page<T> getPageable(Pageable pageable);
+    Page<T> getListPageable(Pageable pageable);
 
     T save(T t);
 }

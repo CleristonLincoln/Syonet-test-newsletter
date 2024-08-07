@@ -1,6 +1,5 @@
 package br.com.syonet.newsletter.api.v1.model;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -9,7 +9,7 @@ public enum ProblemType {
     INVALID_DATA("dados-invalidos", "Dados Inválidos"),
     INVALID_PARAM("parametro-invalido", "Parametro Inválido"),
     OPERATION_NOT_PERMIT("operacao-nao-permitida", "Operação não permitida"),
-    ERROR_DE_SYSTEM("sistema-erro", "erro no sistema");
+    ERROR_DE_SYSTEM("sistema-erro", "Erro no sistema");
 
 
     private final String title;

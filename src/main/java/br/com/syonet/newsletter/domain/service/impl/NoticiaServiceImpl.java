@@ -10,9 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -22,7 +20,7 @@ public class NoticiaServiceImpl implements NoticiaService {
     private final NoticiaRepository repository;
 
     @Override
-    public Page<Noticia> getPageable(Pageable pageable) {
+    public Page<Noticia> getListPageable(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
@@ -35,7 +33,13 @@ public class NoticiaServiceImpl implements NoticiaService {
     private void validLink(String link) {
         UrlValidator urlValidator = new UrlValidator();
 
-    if (Objects.nonNull(link) && !urlValidator.isValid(link))
-        throw new LinkInvalidException();
+        if (Objects.nonNull(link) && !urlValidator.isValid(link))
+            throw new LinkInvalidException();
+    }
+
+    @Override
+    public List<Noticia> noticiaNotSend() {
+        List<Noticia> c = repository.listNoticiaNotSend();
+        return c;
     }
 }

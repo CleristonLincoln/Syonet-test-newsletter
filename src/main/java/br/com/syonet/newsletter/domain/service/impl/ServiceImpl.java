@@ -15,7 +15,7 @@ public class ServiceImpl implements ClienteService {
     private final ClienteRepository repository;
 
     @Override
-    public Page<Cliente> getPageable(Pageable pageable) {
+    public Page<Cliente> getListPageable(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
