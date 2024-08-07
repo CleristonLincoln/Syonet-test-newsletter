@@ -1,28 +1,26 @@
 package br.com.syonet.newsletter.core;
 
 import br.com.syonet.newsletter.infra.SendMailService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Log4j2
-@EnableScheduling
+
 @Component
+@RequiredArgsConstructor
 public class ScheduledTasks {
 
     private static final String TIME_ZONE = "America/Sao_Paulo";
 
-    @Autowired
-    private SendMailService sendMailService;
+    private final SendMailService sendMailService;
 
-
-    @Scheduled(cron = "0 45 13 * * ?", zone = TIME_ZONE)
-    public void performTask() {
-        log.info("Iniciando tarefa agendada: {}", LocalDateTime.now());
+    @Scheduled(cron = "${syonet.datetime.sendNotification}", zone = TIME_ZONE)
+    public void sendNotificationsPerEmail() {
+        log.info("Iniciando tarefa agendada: sendNotificationsPerEmail {}", LocalDateTime.now());
 
         sendMailService.enviarEmail();
 

@@ -44,7 +44,6 @@ spring:
             required: true
 server:
   port: ${PORT:8080}
-#logging:
-#  level:
-#    org:
-#      springframework: DEBUG
+syonet:
+  datetime:
+    sendNotification: "0 0 8 * * ?"

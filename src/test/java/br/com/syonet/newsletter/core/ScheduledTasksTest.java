@@ -2,26 +2,26 @@ package br.com.syonet.newsletter.core;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import static org.awaitility.Awaitility.await;
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {ScheduledTasks.class})
+@SpringBootTest
 class ScheduledTasksTest {
-    @Autowired
-    private ScheduledTasks yourScheduledClass;
+
+    @SpyBean
+    private ScheduledTasks scheduledTasks;
 
     @Test
-    public void testScheduledTask() {
-        await().atMost(60, SECONDS).untilAsserted(() -> {
-            System.out.println("dwedfw");
-         //   assertThat(yourScheduledClass.performTask(), is(true));
-        });
+    public void testPerformTask() {
+        await().atMost(10, SECONDS).untilAsserted(() ->
+                verify(scheduledTasks, times(1)).sendNotificationsPerEmail()
+        );
     }
 }

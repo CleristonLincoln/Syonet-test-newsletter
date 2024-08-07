@@ -8,10 +8,10 @@ import br.com.syonet.newsletter.domain.service.ControleEnvioService;
 import br.com.syonet.newsletter.domain.service.NoticiaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -20,20 +20,19 @@ import java.util.List;
 public class SendMailService {
 
     private final NoticiaService noticiaService;
-
     private final ClienteService clienteService;
-
     private final EmailService emailService;
-
     private final ControleEnvioService controleEnvioService;
+
 
 
     public void enviarEmail() {
 
-        List<Noticia> noticiasNotSend = getNoticiasNaoEnviadas();
+        log.info("Iniciando metodo de envio de emails");
 
-        List<Cliente> clientes = clienteService
-                .getListPageable(PageRequest.of(0, 1000)).getContent();
+        List<Noticia> noticiasNotSend = new ArrayList<>(getNoticiasNaoEnviadas());
+
+        List<Cliente> clientes = clienteService.findAll();
 
         if (!noticiasNotSend.isEmpty()) {
             noticiasNotSend.forEach(noticia -> {
@@ -47,7 +46,7 @@ public class SendMailService {
 
     }
 
-    private void criarEmailEEnviar(Noticia noticia, Cliente cliente) {
+    public void criarEmailEEnviar(Noticia noticia, Cliente cliente) {
 
         StringBuilder body = new StringBuilder();
 
@@ -63,13 +62,14 @@ public class SendMailService {
 
         body.append(noticia.getDescricao());
 
-        emailService.sendEmail(cliente.getEmail(), noticia.getTitulo(), body.toString());
+        if (cliente.getEmail() != null && noticia.getTitulo()!= null )
+            emailService.sendEmail(cliente.getEmail(), noticia.getTitulo(), body.toString());
 
         controleEnvioService.save(new ControleEnvio(noticia, cliente));
     }
 
 
-    private List<Noticia> getNoticiasNaoEnviadas() {
+    List<Noticia> getNoticiasNaoEnviadas() {
         return noticiaService.noticiasNaoEnviadas();
     }
 
