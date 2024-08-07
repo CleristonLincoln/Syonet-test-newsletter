@@ -1,6 +1,8 @@
 package br.com.syonet.newsletter.api.v1.controller;
 
 import br.com.syonet.newsletter.api.v1.input.NoticiaInput;
+import br.com.syonet.newsletter.api.v1.model.ClienteModel;
+import br.com.syonet.newsletter.api.v1.model.NoticiaModel;
 import br.com.syonet.newsletter.domain.model.Noticia;
 import br.com.syonet.newsletter.domain.service.NoticiaService;
 import jakarta.validation.Valid;
@@ -8,10 +10,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Log4j2
 @RestController
@@ -24,23 +30,32 @@ public class NoticiaController {
     private final ModelMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Noticia> create(@RequestBody @Valid NoticiaInput noticiaInput) {
+    public ResponseEntity<NoticiaModel> create(@RequestBody @Valid NoticiaInput noticiaInput) {
 
         Noticia noticia = service.save(mapper.map(noticiaInput, Noticia.class));
 
         log.info("Criando nova noticia: {}", noticia);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(noticia);
+        NoticiaModel noticiaModel = mapper.map(noticia, NoticiaModel.class);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(noticiaModel);
 
     }
 
     @GetMapping
-    public ResponseEntity<Page<Noticia>> getAll(Pageable pageable) {
+    public ResponseEntity<Page<NoticiaModel>> getAll(Pageable pageable) {
 
         Page<Noticia> page = service.getListPageable(pageable);
 
         log.info("Lista de noticias total: {}", page.getTotalElements());
 
-        return ResponseEntity.ok(page);
+        List<NoticiaModel> noticiaModel = new ArrayList<>();
+
+        page.getContent().forEach(cliente -> noticiaModel.add(mapper.map(cliente, NoticiaModel.class)));
+
+        Page<NoticiaModel> newPage = new PageImpl<>(noticiaModel, pageable, page.getSize());
+
+
+        return ResponseEntity.ok(newPage);
     }
 }

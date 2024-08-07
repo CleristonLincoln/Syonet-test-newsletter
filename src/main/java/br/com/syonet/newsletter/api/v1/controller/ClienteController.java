@@ -53,8 +53,6 @@ public class ClienteController {
 
         page.getContent().forEach(cliente -> clienteModelList.add(mapper.map(cliente, ClienteModel.class)));
 
-
-
         Page<ClienteModel> newPage = new PageImpl<>(clienteModelList, pageable, page.getSize());
 
 
