@@ -1,5 +1,7 @@
 CREATE TABLE noticia_x_cliente
 (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+
     id_noticia INT NOT NULL,
     id_cliente INT NOT NULL,
 

@@ -10,10 +10,10 @@ import java.util.List;
 public interface NoticiaRepository extends JpaRepository<Noticia, Long> {
 
     @Transactional(readOnly = true)
-    @Query(value = "select n.* \n" +
-            "from noticia n \n" +
+    @Query(value = "select n.* " +
+            "from noticia n " +
             "where n.id not in (select nc.id_noticia from noticia_x_cliente nc)", nativeQuery = true)
-    List<Noticia> listNoticiaNotSend();
+    List<Noticia> listarNoticiasNaoEnviadas();
 
 
 }

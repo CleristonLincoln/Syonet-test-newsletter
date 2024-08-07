@@ -1,13 +1,15 @@
 package br.com.syonet.newsletter.core;
 
 import br.com.syonet.newsletter.infra.SendMailService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-
+@Log4j2
 @EnableScheduling
 @Component
 public class ScheduledTasks {
@@ -18,11 +20,14 @@ public class ScheduledTasks {
     private SendMailService sendMailService;
 
 
- //   @Scheduled(cron = "0 12 9 * * ?", zone = TIME_ZONE)
-  //  @Scheduled(fixedRate = 5000)
+    @Scheduled(cron = "0 45 13 * * ?", zone = TIME_ZONE)
     public void performTask() {
-        System.out.println("A tarefa agendada está sendo executada: " + LocalDateTime.now());
-        sendMailService.sendMail();
+        log.info("Iniciando tarefa agendada: {}", LocalDateTime.now());
+
+        sendMailService.enviarEmail();
+
+        log.info("Finalizando tarefa agendada: {}", LocalDateTime.now());
+
     }
 
 }

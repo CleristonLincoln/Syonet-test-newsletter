@@ -1,51 +1,76 @@
 package br.com.syonet.newsletter.infra;
 
 import br.com.syonet.newsletter.domain.model.Cliente;
+import br.com.syonet.newsletter.domain.model.ControleEnvio;
 import br.com.syonet.newsletter.domain.model.Noticia;
 import br.com.syonet.newsletter.domain.service.ClienteService;
+import br.com.syonet.newsletter.domain.service.ControleEnvioService;
 import br.com.syonet.newsletter.domain.service.NoticiaService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
+@Log4j2
 @Service
+@RequiredArgsConstructor
 public class SendMailService {
 
-    private final int NUMBER_CLIENTES_PER_SEND = 50;
+    private final NoticiaService noticiaService;
 
-    @Autowired
-    private NoticiaService noticiaService;
+    private final ClienteService clienteService;
 
-    @Autowired
-    private ClienteService clienteService;
+    private final EmailService emailService;
+
+    private final ControleEnvioService controleEnvioService;
 
 
-    public void sendMail() {
+    public void enviarEmail() {
 
-        List<Cliente> clientes = new ArrayList<>();
-        int totalPages = 0;
+        List<Noticia> noticiasNotSend = getNoticiasNaoEnviadas();
 
-        List<Noticia> noticiasNotSend = getNoticiasNotSend();
+        List<Cliente> clientes = clienteService
+                .getListPageable(PageRequest.of(0, 1000)).getContent();
 
-        System.out.println(noticiasNotSend);
-
-        for (int i = 0; i <= totalPages; i++) {
-            Page<Cliente> clientesPage = clienteService
-                    .getListPageable(PageRequest.of(i, NUMBER_CLIENTES_PER_SEND));
-
-            totalPages = clientesPage.getTotalPages();
-
-            clientesPage.getContent().forEach(cliente -> {});
+        if (!noticiasNotSend.isEmpty()) {
+            noticiasNotSend.forEach(noticia -> {
+                clientes.forEach(cliente -> {
+                    criarEmailEEnviar(noticia, cliente);
+                });
+            });
+        } else {
+            log.info("Nenhum notícia a ser enviada.");
         }
 
     }
 
-    private List<Noticia> getNoticiasNotSend() {
-        return noticiaService.noticiaNotSend();
+    private void criarEmailEEnviar(Noticia noticia, Cliente cliente) {
+
+        StringBuilder body = new StringBuilder();
+
+        body.append("Bom dia ").append(cliente.getNome()).append("!\n");
+
+        if (cliente.getDataNascimento() != null && cliente.getDataNascimento().equals(LocalDate.now())) {
+            body.append("Feliz aniversário!\n\n");
+        }
+
+        if (noticia.getLink() != null) {
+            body.append(noticia.getLink()).append("\n\n");
+        }
+
+        body.append(noticia.getDescricao());
+
+        emailService.sendEmail(cliente.getEmail(), noticia.getTitulo(), body.toString());
+
+        controleEnvioService.save(new ControleEnvio(noticia, cliente));
+    }
+
+
+    private List<Noticia> getNoticiasNaoEnviadas() {
+        return noticiaService.noticiasNaoEnviadas();
     }
 
 }

@@ -26,11 +26,11 @@ public class NoticiaServiceImpl implements NoticiaService {
 
     @Override
     public Noticia save(Noticia noticia) {
-        validLink(noticia.getLink());
+        validarLink(noticia.getLink());
         return repository.save(noticia);
     }
 
-    private void validLink(String link) {
+    private void validarLink(String link) {
         UrlValidator urlValidator = new UrlValidator();
 
         if (Objects.nonNull(link) && !urlValidator.isValid(link))
@@ -38,8 +38,7 @@ public class NoticiaServiceImpl implements NoticiaService {
     }
 
     @Override
-    public List<Noticia> noticiaNotSend() {
-        List<Noticia> c = repository.listNoticiaNotSend();
-        return c;
+    public List<Noticia> noticiasNaoEnviadas() {
+        return repository.listarNoticiasNaoEnviadas();
     }
 }

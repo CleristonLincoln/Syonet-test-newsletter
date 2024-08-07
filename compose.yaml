@@ -1,10 +1,10 @@
 services:
   mysql:
     image: mysql:8.4
-    container_name: meu-mysql
+    container_name: mysql-base
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: user
+      MYSQL_DATABASE: newsletter
       MYSQL_USER: user
       MYSQL_PASSWORD: user
     ports:

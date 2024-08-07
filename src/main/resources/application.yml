@@ -1,25 +1,12 @@
 spring:
   application:
     name: newsletter
+
   datasource:
-    url: jdbc:mysql://localhost/newsletter?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/newsletter?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
     password: root
-    hikari:
-      maximum-pool-size: 1
-  jackson:
-    deserialization:
-      fail-on-unknown-properties: true
-      fail-on-ignored-properties: true
-  flyway:
-    enabled: true
-    encoding: utf-8
-    password: root
-    user: root
-    url: jdbc:mysql://localhost/newsletter?createDatabaseIfNotExist=true
-    locations:
-      - classpath:db/migration
-      - classpath:db/testData
+
   jpa:
     show-sql: true
     properties:
@@ -27,11 +14,27 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: none
+
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+      fail-on-ignored-properties: true
+
+  flyway:
+    enabled: true
+    encoding: utf-8
+    password: root
+    user: root
+    url: jdbc:mysql://localhost:3306/newsletter?createDatabaseIfNotExist=true&serverTimezone=UTC
+    locations:
+      - classpath:db/migration
+      - classpath:db/testData
+
   mail:
     host: smtp.gmail.com
     port: 587
-    username: cllew
-    password: edwed
+    username: ${EMAIL_USER:macntor@gmail.com}
+    password: ${EMAIL_PASSWORD:qfjo lnbx iaem yvth}
     properties:
       mail:
         smtp:
@@ -41,3 +44,7 @@ spring:
             required: true
 server:
   port: ${PORT:8080}
+#logging:
+#  level:
+#    org:
+#      springframework: DEBUG

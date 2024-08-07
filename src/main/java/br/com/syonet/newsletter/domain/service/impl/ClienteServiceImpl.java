@@ -8,9 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-public class ServiceImpl implements ClienteService {
+public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository repository;
 
@@ -23,4 +25,6 @@ public class ServiceImpl implements ClienteService {
     public Cliente save(Cliente cliente) {
         return repository.save(cliente);
     }
+
+
 }

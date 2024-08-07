@@ -1,24 +1,26 @@
 package br.com.syonet.newsletter.infra;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
+@RequiredArgsConstructor
 public class EmailService {
 
-
-
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     public void sendEmail(String to, String subject, String body) {
 
+        log.info("Enviando email <{}> to: {}", subject, to);
+
         SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setTo(new String[]{"macntor@gmail.com"});
-
+        message.setTo(to);
         message.setSubject(subject);
         message.setText(body);
 
