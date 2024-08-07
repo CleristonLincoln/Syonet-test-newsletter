@@ -20,7 +20,7 @@ Criação de um sistema que:
  * Para testes recomendo iniciar atravez do comando `docker-compose up` na pasta raiz.
  * O email deve ser configurado para funcionar corretamente. Dia 9/08/2024 removerei a chave cadastrada como default
 
-
+ * url do swagger = /swagger-ui/index.html
 
 ### Documentação de Referencia
 

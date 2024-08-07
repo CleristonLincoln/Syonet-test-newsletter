@@ -33,7 +33,7 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${EMAIL_USER:teste@gmail.com}
+    username: ${EMAIL_USER:macntor@gmail.com}
     password: ${EMAIL_PASSWORD:qfjo lnbx iaem yvth}
     properties:
       mail:
@@ -47,3 +47,6 @@ server:
 syonet:
   datetime:
     sendNotification: "0 0 8 * * ?"
+springdoc:
+  api-docs:
+    path: /api-docs
