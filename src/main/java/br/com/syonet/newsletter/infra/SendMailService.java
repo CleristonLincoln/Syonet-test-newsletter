@@ -6,6 +6,7 @@ import br.com.syonet.newsletter.domain.model.Noticia;
 import br.com.syonet.newsletter.domain.service.ClienteService;
 import br.com.syonet.newsletter.domain.service.ControleEnvioService;
 import br.com.syonet.newsletter.domain.service.NoticiaService;
+import br.com.syonet.newsletter.infra.email.EmailGmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class SendMailService {
 
     private final NoticiaService noticiaService;
     private final ClienteService clienteService;
-    private final EmailService emailService;
+    private final EmailGmailService emailService;
     private final ControleEnvioService controleEnvioService;
 
 

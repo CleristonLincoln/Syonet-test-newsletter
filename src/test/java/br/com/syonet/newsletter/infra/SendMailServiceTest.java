@@ -3,10 +3,10 @@ package br.com.syonet.newsletter.infra;
 import br.com.syonet.newsletter.domain.model.Cliente;
 import br.com.syonet.newsletter.domain.model.ControleEnvio;
 import br.com.syonet.newsletter.domain.model.Noticia;
-import br.com.syonet.newsletter.domain.repository.NoticiaRepository;
 import br.com.syonet.newsletter.domain.service.ClienteService;
 import br.com.syonet.newsletter.domain.service.ControleEnvioService;
 import br.com.syonet.newsletter.domain.service.NoticiaService;
+import br.com.syonet.newsletter.infra.email.EmailGmailService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,6 @@ import static org.mockito.Mockito.*;
 @RequiredArgsConstructor
 class SendMailServiceTest {
 
-    // @Autowired
     @InjectMocks
     private SendMailService sendMailService;
 
@@ -36,7 +35,7 @@ class SendMailServiceTest {
     @Mock
     private NoticiaService noticiaService;
     @Mock
-    private EmailService emailService;
+    private EmailGmailService emailGmailService;
     @Mock
     private ControleEnvioService controleEnvioService;
 
@@ -55,13 +54,13 @@ class SendMailServiceTest {
         lenient().when(clienteService.findAll()).thenReturn(clientes);
         lenient().when(noticiaService.noticiasNaoEnviadas()).thenReturn(noticias);
 
-        doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString());
+        doNothing().when(emailGmailService).sendEmail(anyString(), anyString(), anyString());
 
         doNothing().when(controleEnvioService).save(any(ControleEnvio.class));
 
-        sendMailService.enviarEmail();
+        sendMailService.processarEmails();
 
-        verify(emailService, times(noticias.size() * clientes.size())).sendEmail(anyString(), anyString(), anyString());
+        verify(emailGmailService, times(noticias.size() * clientes.size())).sendEmail(anyString(), anyString(), anyString());
         verify(controleEnvioService, times(noticias.size() * clientes.size())).save(any(ControleEnvio.class));
 
     }
@@ -80,14 +79,14 @@ class SendMailServiceTest {
         lenient().when(clienteService.findAll()).thenReturn(clientes);
         lenient().when(noticiaService.noticiasNaoEnviadas()).thenReturn(noticias);
 
-        doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString());
+        doNothing().when(emailGmailService).sendEmail(anyString(), anyString(), anyString());
 
         doNothing().when(controleEnvioService).save(any(ControleEnvio.class));
 
-        sendMailService.enviarEmail();
+        sendMailService.processarEmails();
 
         ArgumentCaptor<String> bodyCaptor = ArgumentCaptor.forClass(String.class);
-        verify(emailService, times(clientes.size())).sendEmail(anyString(), anyString(), bodyCaptor.capture());
+        verify(emailGmailService, times(clientes.size())).sendEmail(anyString(), anyString(), bodyCaptor.capture());
 
         List<String> capturedBodies = bodyCaptor.getAllValues();
         for (String body : capturedBodies) {
@@ -108,14 +107,14 @@ class SendMailServiceTest {
         lenient().when(clienteService.findAll()).thenReturn(clientes);
         lenient().when(noticiaService.noticiasNaoEnviadas()).thenReturn(noticias);
 
-        doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString());
+        doNothing().when(emailGmailService).sendEmail(anyString(), anyString(), anyString());
 
         doNothing().when(controleEnvioService).save(any(ControleEnvio.class));
 
-        sendMailService.enviarEmail();
+        sendMailService.processarEmails();
 
         ArgumentCaptor<String> bodyCaptor = ArgumentCaptor.forClass(String.class);
-        verify(emailService, times(clientes.size())).sendEmail(anyString(), anyString(), bodyCaptor.capture());
+        verify(emailGmailService, times(clientes.size())).sendEmail(anyString(), anyString(), bodyCaptor.capture());
 
         List<String> capturedBodies = bodyCaptor.getAllValues();
         for (String body : capturedBodies) {
@@ -136,14 +135,14 @@ class SendMailServiceTest {
         lenient().when(clienteService.findAll()).thenReturn(clientes);
         lenient().when(noticiaService.noticiasNaoEnviadas()).thenReturn(noticias);
 
-        doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString());
+        doNothing().when(emailGmailService).sendEmail(anyString(), anyString(), anyString());
 
         doNothing().when(controleEnvioService).save(any(ControleEnvio.class));
 
-        sendMailService.enviarEmail();
+        sendMailService.processarEmails();
 
         ArgumentCaptor<String> bodyCaptor = ArgumentCaptor.forClass(String.class);
-        verify(emailService, times(clientes.size())).sendEmail(anyString(), anyString(), bodyCaptor.capture());
+        verify(emailGmailService, times(clientes.size())).sendEmail(anyString(), anyString(), bodyCaptor.capture());
 
         List<String> capturedBodies = bodyCaptor.getAllValues();
         for (String body : capturedBodies) {
@@ -164,14 +163,14 @@ class SendMailServiceTest {
         lenient().when(clienteService.findAll()).thenReturn(clientes);
         lenient().when(noticiaService.noticiasNaoEnviadas()).thenReturn(noticias);
 
-        doNothing().when(emailService).sendEmail(anyString(), anyString(), anyString());
+        doNothing().when(emailGmailService).sendEmail(anyString(), anyString(), anyString());
 
         doNothing().when(controleEnvioService).save(any(ControleEnvio.class));
 
-        sendMailService.enviarEmail();
+        sendMailService.processarEmails();
 
         ArgumentCaptor<String> bodyCaptor = ArgumentCaptor.forClass(String.class);
-        verify(emailService, times(clientes.size())).sendEmail(anyString(), anyString(), bodyCaptor.capture());
+        verify(emailGmailService, times(clientes.size())).sendEmail(anyString(), anyString(), bodyCaptor.capture());
 
         List<String> capturedBodies = bodyCaptor.getAllValues();
         for (String body : capturedBodies) {

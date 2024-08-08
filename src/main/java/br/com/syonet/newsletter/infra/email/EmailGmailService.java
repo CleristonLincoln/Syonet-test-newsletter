@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class EmailService {
+public class EmailGmailService {
 
     private final JavaMailSender mailSender;
 
