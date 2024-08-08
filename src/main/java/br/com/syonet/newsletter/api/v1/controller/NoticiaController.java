@@ -56,4 +56,13 @@ public class NoticiaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(noticiaModel);
     }
 
+
+    @GetMapping("nao-enviadas")
+    public ResponseEntity<List<Noticia>> listarNoticiasNaoEnviadas(){
+
+        List<Noticia> noticiasNaoEnviadas = service.noticiasNaoEnviadas();
+        log.info("Listando noticias não enviadas");
+
+        return ResponseEntity.ok(noticiasNaoEnviadas);
+    }
 }
