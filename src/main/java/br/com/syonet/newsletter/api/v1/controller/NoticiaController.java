@@ -29,19 +29,12 @@ public class NoticiaController {
 
 
     @GetMapping
-    public ResponseEntity<Page<NoticiaModel>> getAll(Pageable pageable) {
+    public ResponseEntity<List<Noticia>> getAll(Pageable pageable) {
 
-        Page<Noticia> page = service.getListPageable(pageable);
+        List<Noticia> noticiasNaoEnviadas = service.noticiasNaoEnviadas();
+        log.info("Listando noticias não enviadas");
 
-        log.info("Lista de noticias total: {}", page.getTotalElements());
-
-        List<NoticiaModel> noticiaModel = new ArrayList<>();
-
-        page.getContent().forEach(cliente -> noticiaModel.add(mapper.map(cliente, NoticiaModel.class)));
-
-        Page<NoticiaModel> newPage = new PageImpl<>(noticiaModel, pageable, page.getSize());
-
-        return ResponseEntity.ok(newPage);
+        return ResponseEntity.ok(noticiasNaoEnviadas);
     }
 
     @PostMapping
@@ -56,13 +49,4 @@ public class NoticiaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(noticiaModel);
     }
 
-
-    @GetMapping("nao-enviadas")
-    public ResponseEntity<List<Noticia>> listarNoticiasNaoEnviadas(){
-
-        List<Noticia> noticiasNaoEnviadas = service.noticiasNaoEnviadas();
-        log.info("Listando noticias não enviadas");
-
-        return ResponseEntity.ok(noticiasNaoEnviadas);
-    }
 }
