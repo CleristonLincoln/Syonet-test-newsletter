@@ -26,7 +26,7 @@ public class NoticiaController {
 
 
     @GetMapping
-    public ResponseEntity<List<Noticia>> getAll(Pageable pageable) {
+    public ResponseEntity<List<Noticia>> getNotiviasNaoEnviadas() {
 
         List<Noticia> noticiasNaoEnviadas = service.noticiasNaoEnviadas();
         log.info("Listando noticias não enviadas");
