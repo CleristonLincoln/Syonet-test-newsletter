@@ -1,4 +1,4 @@
-package br.com.syonet.newsletter.infra;
+package br.com.syonet.newsletter.infra.email;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

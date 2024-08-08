@@ -2,7 +2,6 @@ package br.com.syonet.newsletter.api.v1.controller;
 
 import br.com.syonet.newsletter.api.v1.input.ClienteInput;
 import br.com.syonet.newsletter.api.v1.model.ClienteModel;
-import br.com.syonet.newsletter.api.v1.openApi.ClienteControllerOpenApi;
 import br.com.syonet.newsletter.domain.model.Cliente;
 import br.com.syonet.newsletter.domain.service.ClienteService;
 import jakarta.validation.Valid;
@@ -23,19 +22,16 @@ import java.util.List;
 @RestController
 @RequestMapping("clientes")
 @RequiredArgsConstructor
-public class ClienteController implements ClienteControllerOpenApi {
+public class ClienteController {
 
     private final ClienteService service;
-
     private final ModelMapper mapper;
 
-    @Override
     @GetMapping
     public ResponseEntity<Page<ClienteModel>> getAll(Pageable pageable) {
         Page<Cliente> page = service.getListPageable(pageable);
 
         log.info("Lista de clientes total: {}", page.getTotalElements());
-
 
         List<ClienteModel> clienteModelList = new ArrayList<>();
 
@@ -43,13 +39,11 @@ public class ClienteController implements ClienteControllerOpenApi {
 
         Page<ClienteModel> newPage = new PageImpl<>(clienteModelList, pageable, page.getSize());
 
-
         return ResponseEntity.ok(newPage);
     }
 
-    @Override
     @PostMapping
-    public ResponseEntity<ClienteModel> create(ClienteInput clienteInput) {
+    public ResponseEntity<ClienteModel> create(@RequestBody @Valid ClienteInput clienteInput) {
         Cliente cliente = service.save(mapper.map(clienteInput, Cliente.class));
 
         log.info("Criando novo cliente: {}", cliente);

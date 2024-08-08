@@ -2,7 +2,6 @@ package br.com.syonet.newsletter.api.v1.controller;
 
 import br.com.syonet.newsletter.api.v1.input.NoticiaInput;
 import br.com.syonet.newsletter.api.v1.model.NoticiaModel;
-import br.com.syonet.newsletter.api.v1.openApi.NoticiaControllerOpenApi;
 import br.com.syonet.newsletter.domain.model.Noticia;
 import br.com.syonet.newsletter.domain.service.NoticiaService;
 import jakarta.validation.Valid;
@@ -23,27 +22,12 @@ import java.util.List;
 @RestController
 @RequestMapping("noticias")
 @RequiredArgsConstructor
-public class NoticiaController implements NoticiaControllerOpenApi {
+public class NoticiaController {
 
     private final NoticiaService service;
-
     private final ModelMapper mapper;
 
-    @Override
-    @PostMapping
-    public ResponseEntity<NoticiaModel> create(@RequestBody @Valid NoticiaInput noticiaInput) {
 
-        Noticia noticia = service.save(mapper.map(noticiaInput, Noticia.class));
-
-        log.info("Criando nova noticia: {}", noticia);
-
-        NoticiaModel noticiaModel = mapper.map(noticia, NoticiaModel.class);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(noticiaModel);
-
-    }
-
-    @Override
     @GetMapping
     public ResponseEntity<Page<NoticiaModel>> getAll(Pageable pageable) {
 
@@ -57,7 +41,19 @@ public class NoticiaController implements NoticiaControllerOpenApi {
 
         Page<NoticiaModel> newPage = new PageImpl<>(noticiaModel, pageable, page.getSize());
 
-
         return ResponseEntity.ok(newPage);
     }
+
+    @PostMapping
+    public ResponseEntity<NoticiaModel> create(@RequestBody @Valid NoticiaInput noticiaInput) {
+
+        Noticia noticia = service.save(mapper.map(noticiaInput, Noticia.class));
+
+        log.info("Criando nova noticia: {}", noticia);
+
+        NoticiaModel noticiaModel = mapper.map(noticia, NoticiaModel.class);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(noticiaModel);
+    }
+
 }

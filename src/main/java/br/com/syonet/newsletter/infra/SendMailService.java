@@ -25,10 +25,9 @@ public class SendMailService {
     private final ControleEnvioService controleEnvioService;
 
 
+    public void processarEmails() {
 
-    public void enviarEmail() {
-
-        log.info("Iniciando metodo de envio de emails");
+        log.info("Iniciando processo de envio de emails");
 
         List<Noticia> noticiasNotSend = new ArrayList<>(getNoticiasNaoEnviadas());
 

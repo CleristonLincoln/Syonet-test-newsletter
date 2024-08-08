@@ -22,7 +22,7 @@ public class ScheduledTasks {
     public void sendNotificationsPerEmail() {
         log.info("Iniciando tarefa agendada: sendNotificationsPerEmail {}", LocalDateTime.now());
 
-        sendMailService.enviarEmail();
+        sendMailService.processarEmails();
 
         log.info("Finalizando tarefa agendada: {}", LocalDateTime.now());
 
